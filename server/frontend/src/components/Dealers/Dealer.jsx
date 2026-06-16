@@ -25,16 +25,23 @@ const Dealer = () => {
   let post_review = root_url+`postreview/${id}`;
   
   const get_dealer = async ()=>{
-    const res = await fetch(dealer_url, {
-      method: "GET"
-    });
-    const retobj = await res.json();
-    
-    if(retobj.status === 200) {
-      let dealerobjs = Array.from(retobj.dealer)
-      setDealer(dealerobjs[0])
-    }
-  }
+    try {
+        const res = await fetch(dealer_url, { method: "GET" });
+        const retobj = await res.json();
+        
+        if (retobj.status === 200 && retobj.dealer) {
+          // If the backend returns an array, take the first element. 
+          // If it's already an object, set it directly!
+          if (Array.isArray(retobj.dealer)) {
+            setDealer(retobj.dealer[0]);
+          } else {
+            setDealer(retobj.dealer);
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching dealer profile:", err);
+      }
+    };
 
   const get_reviews = async ()=>{
     const res = await fetch(reviews_url, {
@@ -65,6 +72,14 @@ const Dealer = () => {
       
     }
   },[]);  
+  if (!dealer || Object.keys(dealer).length === 0) {
+    return (
+      <div style={{ margin: "20px" }}>
+        <Header />
+        <h3 style={{ textAlign: "center", marginTop: "40px", color: "grey" }}>Loading Dealer Profiles...</h3>
+      </div>
+    );
+  }
 
 
 return(
