@@ -113,9 +113,9 @@ def get_dealer_details(request, dealer_id):
     if(dealer_id):
         endpoint = "/fetchDealer/"+str(dealer_id)
         dealership = get_request(endpoint)
-        return JsonResponse({"status":200,"dealer":dealership})
+        return JsonResponse({"status":200,"dealer":dealer_details})
     else:
-        return JsonResponse({"status":400,"message":"Bad Request"})
+        return JsonResponse({"status":400,"message":"Bad Request:Missing dealer ID"})
 # ...
 
 # Create a `add_review` view to submit a review
@@ -145,8 +145,9 @@ def get_dealer_reviews(request, dealer_id):
             review_detail['sentiment'] = sentiment_response.get('sentiment', 'neutral')
             
         return JsonResponse({"status": 200, "reviews": reviews})
-    return JsonResponse({"status": 400, "message": "Bad Request: Missing Dealer ID"})
-# ...
+    else:
+            return JsonResponse({"status": 400, "message": "Bad Request: Missing Dealer ID"})
+    
 def get_cars(request):
     count = CarMake.objects.filter().count()
     print(count)
