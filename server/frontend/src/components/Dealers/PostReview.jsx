@@ -80,10 +80,12 @@ const PostReview = () => {
       method: "GET"
     });
     const retobj = await res.json();
+    if (retobj && retobj.CarModels) {
     
     let carmodelsarr = Array.from(retobj.CarModels)
     setCarmodels(carmodelsarr)
   }
+}
   useEffect(() => {
     get_dealer();
     get_cars();
