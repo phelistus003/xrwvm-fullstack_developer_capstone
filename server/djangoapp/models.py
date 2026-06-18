@@ -1,7 +1,6 @@
 # Uncomment the following imports before adding the Model code
 
 from django.db import models
-from django.utils.timezone import now
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 
@@ -15,27 +14,29 @@ class CarMake(models.Model):
         return self.name
 
 # <HINT> Create a Car Make model `class CarMake(models.Model)`:
+
+
 class CarModel(models.Model):
     # Many-to-one relationship to CarMake
     car_make = models.ForeignKey(CarMake, on_delete=models.CASCADE, related_name="car_models")
-    
+
     # Dealer ID referring to a dealer created in Cloudant database
     dealer_id = models.IntegerField()
-    
+
     name = models.CharField(max_length=100)
-    
+
     # Type choices matching standard conventions
     SEDAN = 'Sedan'
     SUV = 'SUV'
     WAGON = 'Wagon'
-    
+
     CAR_TYPES = [
         (SEDAN, 'Sedan'),
         (SUV, 'SUV'),
         (WAGON, 'Wagon'),
     ]
     car_type = models.CharField(max_length=20, choices=CAR_TYPES, default=SEDAN)
-    
+
     # Year field strictly validated between 2015 and 2023 as specified by the hint
     year = models.IntegerField(
         validators=[
