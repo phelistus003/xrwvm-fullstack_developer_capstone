@@ -34,5 +34,6 @@ def initiate():
             name=data['name'],
             car_make=data['car_make'],
             car_type=data['type'],
+            dealer_id=1,
             year=data['year']
         )
